@@ -13,10 +13,12 @@ import android.widget.Button;
 
 import com.example.roomdatabase.db.AppDatabase;
 import com.example.roomdatabase.db.User;
+import com.example.roomdatabase.db.UserListAdapter;
 
 import java.util.List;
 
  public class MainActivity extends AppCompatActivity {
+     private UserListAdapter userListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ import java.util.List;
             }
         });
         initRecycler();
+
+        LoadData();
     }
 
      private void initRecycler() {
@@ -38,12 +42,14 @@ import java.util.List;
 
          DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(this,DividerItemDecoration.VERTICAL);
          recyclerView.addItemDecoration(dividerItemDecoration);
-         recyclerView.setAdapter();
+         userListAdapter = new UserListAdapter(this);
+         recyclerView.setAdapter(userListAdapter);
      }
 
      public void LoadData(){
         AppDatabase db = AppDatabase.getInstance(this.getApplicationContext());
         List<User> userList = db.userDao().getAllUsers();
+        userListAdapter.setUserList(userList);
         
     }
 
